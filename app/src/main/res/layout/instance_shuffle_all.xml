@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Shuffle all"
+            android:text="@string/action_shuffle_all"
             android:textColor="?attr/colorAccent"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:textAllCaps="true"
