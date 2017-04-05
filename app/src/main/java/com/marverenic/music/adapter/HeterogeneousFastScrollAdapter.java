@@ -1,13 +1,17 @@
 package com.marverenic.music.adapter;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
 import com.marverenic.adapter.Coordinate;
 import com.marverenic.adapter.HeterogeneousAdapter;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView.MeasurableAdapter;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView.SectionedAdapter;
 
+import timber.log.Timber;
+
 public class HeterogeneousFastScrollAdapter extends HeterogeneousAdapter
-        implements SectionedAdapter {
+        implements SectionedAdapter, MeasurableAdapter {
 
     private static final int LAST_SECTION_INDEX = -1;
     private static final int FIRST_SECTION_INDEX = -2;
@@ -74,5 +78,31 @@ public class HeterogeneousFastScrollAdapter extends HeterogeneousAdapter
         } else {
             return "";
         }
+    }
+
+    @Override
+    public int getHeightOfFirstViewsPx(Resources resources, int viewCount) {
+        int totalHeight = 0;
+        int viewsIncluded = 0;
+
+        for (int i = 0; i < getSectionCount() && viewsIncluded < viewCount; i++) {
+            Section section = getSection(i);
+            if (section instanceof MeasurableAdapter) {
+                MeasurableAdapter measurer = (MeasurableAdapter) section;
+                int sectionViewCount = section.getSize(this);
+
+                viewsIncluded += sectionViewCount;
+                if (viewsIncluded > viewCount) {
+                    sectionViewCount -= viewsIncluded - viewCount;
+                }
+
+                totalHeight += measurer.getHeightOfFirstViewsPx(resources, sectionViewCount);
+            } else {
+                Timber.w("%s does not implement MeasurableAdapter. Scrolling will be inconsistent",
+                        section.getClass().getName());
+            }
+        }
+
+        return totalHeight;
     }
 }
