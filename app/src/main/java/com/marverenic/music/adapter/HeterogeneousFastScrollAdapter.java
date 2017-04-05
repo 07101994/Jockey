@@ -36,8 +36,10 @@ public class HeterogeneousFastScrollAdapter extends HeterogeneousAdapter
 
             section = getSection(mSectionCoordinate.getSection() + walk);
             if (walk > 0) {
+                mSectionCoordinate.setItemIndex(LAST_SECTION_INDEX);
                 walk = -(walk + 1);
             } else {
+                mSectionCoordinate.setItemIndex(FIRST_SECTION_INDEX);
                 walk = -(walk - 1);
             }
         }
@@ -45,21 +47,17 @@ public class HeterogeneousFastScrollAdapter extends HeterogeneousAdapter
         if (mSectionCoordinate.getSection() + walk >= 0) {
             while (!(section instanceof SectionedAdapter)
                     && mSectionCoordinate.getSection() + walk >= 0) {
+                mSectionCoordinate.setItemIndex(LAST_SECTION_INDEX);
                 walk--;
                 section = getSection(mSectionCoordinate.getSection() + walk);
             }
         } else if (mSectionCoordinate.getSection() + walk < getSectionCount()) {
             while (!(section instanceof SectionedAdapter)
                     && mSectionCoordinate.getSection() + walk < getSectionCount()) {
+                mSectionCoordinate.setItemIndex(FIRST_SECTION_INDEX);
                 walk++;
                 section = getSection(mSectionCoordinate.getSection() + walk);
             }
-        }
-
-        if (walk > 0) {
-            mSectionCoordinate.setItemIndex(FIRST_SECTION_INDEX);
-        } else {
-            mSectionCoordinate.setItemIndex(LAST_SECTION_INDEX);
         }
 
         if (section instanceof SectionedAdapter) {
