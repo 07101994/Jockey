@@ -57,10 +57,9 @@ public class SongSection extends HeterogeneousAdapter.ListSection<Song>
     }
 
     @Override
-    public int getHeightOfFirstViewsPx(Resources resources, int viewCount) {
-        int rowHeight = resources.getDimensionPixelSize(R.dimen.list_height)
+    public int getViewTypeHeight(int viewType, Resources resources) {
+        return resources.getDimensionPixelSize(R.dimen.list_height)
                 + resources.getDimensionPixelSize(R.dimen.divider_height);
-        return rowHeight * viewCount;
     }
 
     private class ViewHolder extends EnhancedViewHolder<Song> {

@@ -8,8 +8,6 @@ import com.marverenic.adapter.HeterogeneousAdapter;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView.MeasurableAdapter;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView.SectionedAdapter;
 
-import timber.log.Timber;
-
 public class HeterogeneousFastScrollAdapter extends HeterogeneousAdapter
         implements SectionedAdapter, MeasurableAdapter {
 
@@ -81,28 +79,17 @@ public class HeterogeneousFastScrollAdapter extends HeterogeneousAdapter
     }
 
     @Override
-    public int getHeightOfFirstViewsPx(Resources resources, int viewCount) {
-        int totalHeight = 0;
-        int viewsIncluded = 0;
-
-        for (int i = 0; i < getSectionCount() && viewsIncluded < viewCount; i++) {
+    public int getViewTypeHeight(int viewType, Resources resources) {
+        for (int i = 0; i < getSectionCount(); i++) {
             Section section = getSection(i);
-            if (section instanceof MeasurableAdapter) {
-                MeasurableAdapter measurer = (MeasurableAdapter) section;
-                int sectionViewCount = section.getSize(this);
-
-                viewsIncluded += sectionViewCount;
-                if (viewsIncluded > viewCount) {
-                    sectionViewCount -= viewsIncluded - viewCount;
+            if (section.getTypeId() == viewType) {
+                if (!(section instanceof MeasurableAdapter)) {
+                    return 0;
                 }
 
-                totalHeight += measurer.getHeightOfFirstViewsPx(resources, sectionViewCount);
-            } else {
-                Timber.w("%s does not implement MeasurableAdapter. Scrolling will be inconsistent",
-                        section.getClass().getName());
+                return ((MeasurableAdapter) section).getViewTypeHeight(0, resources);
             }
         }
-
-        return totalHeight;
+        return 0;
     }
 }

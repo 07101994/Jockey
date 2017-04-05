@@ -55,10 +55,9 @@ public class ShuffleAllSection extends HeterogeneousAdapter.SingletonSection<Lis
     }
 
     @Override
-    public int getHeightOfFirstViewsPx(Resources resources, int viewCount) {
-        int rowHeight = resources.getDimensionPixelSize(R.dimen.list_height_small)
+    public int getViewTypeHeight(int viewType, Resources resources) {
+        return resources.getDimensionPixelSize(R.dimen.list_height_small)
                 + resources.getDimensionPixelSize(R.dimen.divider_height);
-        return viewCount * rowHeight;
     }
 
     private class ViewHolder extends EnhancedViewHolder<List<Song>> {
