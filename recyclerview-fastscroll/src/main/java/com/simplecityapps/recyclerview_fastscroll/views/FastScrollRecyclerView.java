@@ -348,4 +348,22 @@ public class FastScrollRecyclerView extends RecyclerView implements RecyclerView
         @NonNull
         String getSectionName(int position);
     }
+
+    /**
+     * FastScrollRecyclerView by default assumes that all items in a RecyclerView will have
+     * ItemViews with the same heights so that the total height of all views in the RecyclerView
+     * can be calculated. If your list uses different view heights, then make your adapter implement
+     * this interface.
+     */
+    public interface MeasurableAdapter {
+        /**
+         * Gets the total height of all elements in this list. This includes all item decorations
+         * and must take into account any special view layouts done by the LayoutManager that is
+         * attached to the RecyclerView.
+         * @param resources A Resources object that may be used to obtain dimension resources
+         *                  (for convenience)
+         * @return The total height of every view in this RecyclerView.Adapter (in pixels)
+         */
+        int getAdapterHeightPx(Resources resources);
+    }
 }
